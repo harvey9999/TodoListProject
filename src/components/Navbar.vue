@@ -38,14 +38,15 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import firebase from "firebase";
+import { mapGetters } from 'vuex';
+import firebase from 'firebase';
+
 export default {
   computed: {
     // map `this.user` to `this.$store.getters.user`
     ...mapGetters({
-      user: "user"
-    })
+      user: 'user',
+    }),
   },
   methods: {
     signOut() {
@@ -54,10 +55,10 @@ export default {
         .signOut()
         .then(() => {
           this.$router.replace({
-            name: "home"
+            name: 'home',
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>

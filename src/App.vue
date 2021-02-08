@@ -1,19 +1,22 @@
 <template>
-  <div id="app">
-    <Nav />
-    <router-view/>
+  <div>
+    <navbar></navbar>
+    <main class="py-4">
+      <router-view></router-view>
+    </main>
   </div>
 </template>
+
 <script>
-import Nav from './components/Nav.vue';
+import navbar from './components/Navbar.vue';
 
 export default {
-  name: 'app',
   components: {
-    Nav,
+    navbar,
   },
 };
 </script>
+
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

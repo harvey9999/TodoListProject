@@ -12,7 +12,7 @@
                 </h3>
               </v-layout>
             </v-card-title>
-            <v-form @submit.prevent="login">
+            <v-form @submit.prevent="register">
             <v-divider></v-divider>
             <v-card-text>
               <p>Sign in with your email and password:</p>
@@ -33,7 +33,7 @@
               <v-spacer></v-spacer>
               <v-btn type='submit' color="info" :large="$vuetify.breakpoint.smAndUp">
                 <!-- <v-icon left>lock</v-icon> -->
-                Sign In
+                Sign Up
               </v-btn>
             </v-card-actions>
             </v-form>
@@ -52,6 +52,7 @@ export default {
   data() {
     return {
       form: {
+        name: '',
         email: '',
         password: '',
       },
@@ -59,12 +60,18 @@ export default {
     };
   },
   methods: {
-    login() {
+    register() {
       firebase
         .auth()
-        .signInWithEmailAndPassword(this.form.email, this.form.password)
-        .then(() => {
-          this.$router.replace({ name: 'Dashboard' });
+        .createUserWithEmailAndPassword(this.form.email, this.form.password)
+        .then((data) => {
+          data.user
+            .updateProfile({
+              displayName: this.form.name,
+            })
+            .then(() => {
+              this.$router.replace({ name: 'Dashboard' });
+            });
         })
         .catch((err) => {
           this.error = err.message;

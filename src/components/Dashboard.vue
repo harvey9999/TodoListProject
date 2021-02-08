@@ -32,6 +32,8 @@
         <footer class="footer" v-if="todos.length">
             <!-- This should be `0 items left` by default -->
             <span class="todo-count"><strong>{{ activeTodos.length }}</strong> item left</span>
+            &nbsp;
+            <span class="todo-count"><strong>{{ completedTodos.length }}</strong> items completed</span>
             <!-- Hidden if no completed items are left ↓ -->
             <button class="clear-completed" @click="clearCompleted" v-show="completedTodos.length">Clear completed</button>
         </footer>

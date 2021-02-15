@@ -3,7 +3,7 @@
   <v-app>
     <v-content>
       <v-container fluid pa-0>
-      <v-form @submit.prevent="login">
+      <v-form @submit.prevent="submitRegister">
         <div class="background-shapes-wrapper">
           <div class="background-shapes-container">
             <div class="background-shape circle-one"></div>
@@ -30,10 +30,10 @@
                  v-else>To keep connected with us, please login with your personal info</span>
               </div>
               <v-btn
-                    to="/register"
+                    to="/login"
                       outlined
                     >
-                      Register
+                      login
                     </v-btn>
             </v-layout>
           </v-flex>
@@ -85,13 +85,24 @@
                    background-color="#f4f8f7"
                    color="grey darken-2" prepend-inner-icon="mdi-lock-outline"
                   @click:append="show1 = !show1"></v-text-field>
-
+                  <v-text-field
+                    name="repeatedPassword"
+                    label="Password"
+                    id="repeatedPassword"
+                    v-model="repeatedPassword"
+                    type="password"
+                    required
+                    @input="$v.repeatedPassword.$touch()"
+                    @blur="$v.repeatedPassword.$touch()"
+                   background-color="#f4f8f7"
+                   color="grey darken-2" prepend-inner-icon="mdi-lock-outline"
+                  @click:append="show1 = !show1"></v-text-field>
               </v-flex>
               <v-btn
                       outlined
                       type="submit"
                     >
-                      Log in
+                      Register
                     </v-btn>
             </v-layout>
           </v-flex>
@@ -106,52 +117,61 @@
 
 <script>
 import firebase from 'firebase';
-import { required, email } from 'vuelidate/lib/validators';
+import {
+  required, email, minLength, sameAs,
+} from 'vuelidate/lib/validators';
 import { validationMixin } from 'vuelidate';
 
 export default {
-  name: 'Login',
+  name: 'Register',
   data() {
     return {
+      // fullname: '',
       email: '',
       password: '',
-      loginError: null,
+      repeatedPassword: '',
+      RegisterSuccess: null,
+      RegisterError: null,
+      // message: 'Already have an account? Login',
     };
   },
   mixins: [validationMixin],
   validations: {
+    fullname: { required },
     email: { required, email },
-    password: { required },
+    password: { required, minLength: minLength(6) },
+    repeatedPassword: { required, sameAsPassword: sameAs('password') },
+
   },
   methods: {
-    login() {
+    submitRegister() {
       this.$v.$touch();
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then((data) => {
-          this.$store.dispatch('auth/userLogin', data.user);
-          this.$router.replace({ name: 'Todos' });
-        })
-        .catch((err) => {
-          console.log(err.message);
-          this.loginError = err.message;
-        });
-    },
-    googleLogin() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      // eslint-disable-next-line no-unused-vars
-      firebase.auth().signInWithPopup(provider).then((data) => {
-        this.$store.dispatch('auth/userLogin', data.user);
-        this.$router.replace({ name: 'Todos' });
-      }).catch((err) => {
-        alert(`${err.message}`);
-      });
+      if (this.password === this.repeatedPassword) {
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then((data) => {
+            this.$router.push({ name: 'Todo' });
+            data.user
+              .then(() => {
+                this.RegisterSuccess = 'Register Successful! Proceed to Todo list';
+                this.RegisterError = null;
+                this.message = 'Go to TODO ';
+                this.$store.dispatch('auth/userRegister', data);
+              });
+          })
+          .catch((err) => {
+            console.log(err.message);
+            this.RegisterError = err.message;
+          });
+      } else {
+        this.RegisterError = 'Password does not match';
+      }
     },
   },
 };
-
 </script>
+
 <style scoped>
 .container {
   min-height: 530px;

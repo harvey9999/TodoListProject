@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-// import Todo from './todo';
+import Todo from './todos';
 import Auth from './auth';
 
 Vue.use(Vuex);
@@ -9,6 +9,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   modules: {
     auth: { ...Auth, namespaced: true },
+    todos: { ...Todo, namespaced: true },
   },
 });
 

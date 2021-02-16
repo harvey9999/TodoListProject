@@ -47,15 +47,6 @@
                 </div>
               </v-flex>
               <v-flex xs12 mb-3>
-                <v-btn outline fab small color="blue-grey lighten-4">
-                  <v-icon color="grey darken-4">mdi-facebook</v-icon>
-                </v-btn>
-                <v-btn outline fab small color="blue-grey lighten-4">
-                  <v-icon color="grey darken-4">mdi-google-plus</v-icon>
-                </v-btn>
-                <v-btn outline fab small color="blue-grey lighten-4">
-                  <v-icon color="grey darken-4">mdi-linkedin</v-icon>
-                </v-btn>
               </v-flex>
               <v-flex xs12 mb-2> <span class="grey--text text--lighten-1">
                 or use your email for registration</span>
@@ -68,8 +59,6 @@
                     v-model="email"
                     type="email"
                     required
-                    @input="$v.email.$touch()"
-                    @blur="$v.email.$touch()"
                     background-color="#f4f8f7"
                  color="grey darken-2" prepend-inner-icon="mdi-email-outline">
                  </v-text-field>
@@ -80,8 +69,6 @@
                     v-model="password"
                     type="password"
                     required
-                    @input="$v.password.$touch()"
-                    @blur="$v.password.$touch()"
                    background-color="#f4f8f7"
                    color="grey darken-2" prepend-inner-icon="mdi-lock-outline"
                   @click:append="show1 = !show1"></v-text-field>
@@ -92,8 +79,6 @@
                     v-model="repeatedPassword"
                     type="password"
                     required
-                    @input="$v.repeatedPassword.$touch()"
-                    @blur="$v.repeatedPassword.$touch()"
                    background-color="#f4f8f7"
                    color="grey darken-2" prepend-inner-icon="mdi-lock-outline"
                   @click:append="show1 = !show1"></v-text-field>
